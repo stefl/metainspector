@@ -46,6 +46,23 @@ module MetaInspector
         parsed.css("meta[@#{attribute}]").map do |tag|
           name    = tag.attributes[attribute].value.downcase rescue nil
           content = tag.attributes['content'].value rescue nil
+          content ||= tag.attributes['href'].value rescue nil
+
+
+          if name && content
+            hash[name] ||= []
+            hash[name] << content
+          end
+        end
+        hash
+      end
+
+      def rel_tags
+        hash = {}
+        parsed.css("[rel]").map do |tag|
+          name    = tag.name.downcase rescue nil
+          value = tag.attributes['value'].value rescue nil
+          content ||= tag.attributes['href'].value rescue nil
 
           if name && content
             hash[name] ||= []

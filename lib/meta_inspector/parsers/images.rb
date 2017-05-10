@@ -67,6 +67,19 @@ module MetaInspector
         end
       end
 
+      def png_icon
+        query = '//link[@rel="apple-touch-icon"]'
+        values = parsed.xpath(query).sort_by do |png|
+          png.attributes['sizes'].value.split("x").first.to_i
+        end
+        if values != []
+          value = values.last.attributes['href'].value
+          @png_icon ||= URL.absolutify(value, base_url)
+        else
+          nil
+        end
+      end
+
       # Return favicon url if exist
       def favicon
         query = '//link[@rel="icon" or contains(@rel, "shortcut")]'
