@@ -70,7 +70,7 @@ module MetaInspector
       def png_icon
         query = '//link[@rel="apple-touch-icon"]'
         values = parsed.xpath(query).sort_by do |png|
-          png.attributes['sizes'].value.split("x").first.to_i
+          png.attributes['sizes'].value.split("x").first.to_i rescue 0
         end
         if values != []
           value = values.last.attributes['href'].value
